@@ -1,0 +1,12 @@
+const Map<String, String> arEG = {
+  'Sales management system': 'نظام إدارة المبيعات',
+  'Home': 'الرئيسية',
+  'Products': 'المنتجات',
+  'Orders': 'الطلبات',
+  'Invoices': 'الفواتير',
+  'Settings': 'الإعدادات',
+  'Shopping Cart': 'عربة التسوق',
+  'Sales': 'المبيعات',
+  'Out of Stock': 'نفذ من المخزون',
+  'Pound': 'جنيه',
+};

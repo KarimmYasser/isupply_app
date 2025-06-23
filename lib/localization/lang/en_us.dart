@@ -1,0 +1,12 @@
+const Map<String, String> enUS = {
+  'Sales management system': 'Sales Management System',
+  'Home': 'Home',
+  'Products': 'Products',
+  'Orders': 'Orders',
+  'Invoices': 'Invoices',
+  'Settings': 'Settings',
+  'Shopping Cart': 'Shopping Cart',
+  'Sales': 'Sales',
+  'Out of Stock': 'Out of Stock',
+  'Pound': 'EGP',
+};
