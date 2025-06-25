@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'invoice_item.dart';
+part 'invoice.g.dart';
 
 @HiveType(typeId: 0)
 class Invoice {

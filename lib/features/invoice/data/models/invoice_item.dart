@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
 import '../../../home/data/models/product.dart';
+part 'invoice_item.g.dart';
 
 @HiveType(typeId: 1)
 class InvoiceItem {
