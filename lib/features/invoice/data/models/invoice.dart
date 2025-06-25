@@ -42,7 +42,7 @@ class Invoice {
       date: json['date'],
       status: json['status'],
       time: json['time'],
-      totalPaid: json['total_paid'],
+      totalPaid: (json['total_paid'] as num).toDouble(),
     );
   }
 

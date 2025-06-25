@@ -21,18 +21,17 @@ class _CartViewState extends State<CartView> {
   final TextEditingController textController = TextEditingController();
   final CustomerController customerController = Get.put(CustomerController());
   Customer? selectedCustomer;
-  final _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _focusNode.requestFocus();
+    cartsController.cartFocusNode.requestFocus();
   }
 
   @override
   Widget build(BuildContext context) {
     return KeyboardListener(
-      focusNode: _focusNode,
+      focusNode: cartsController.cartFocusNode,
       onKeyEvent: (value) => cartsController.handleKeyEvent(value),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

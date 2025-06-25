@@ -4,7 +4,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../data/models/product.dart';
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({Key? key, required this.product}) : super(key: key);
+  const ProductWidget({super.key, required this.product});
   final Product product;
   @override
   Widget build(BuildContext context) {
@@ -19,32 +19,35 @@ class ProductWidget extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: Image.network(
-              product.imageUrl,
-              width: 150,
-              fit: BoxFit.contain,
-              loadingBuilder: (
-                BuildContext context,
-                Widget child,
-                ImageChunkEvent? loadingProgress,
-              ) {
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: const Color.fromARGB(255, 15, 38, 87),
-                    value:
-                        loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                  ),
-                );
-              },
-              errorBuilder:
-                  (context, error, stackTrace) =>
-                      const Icon(Icons.broken_image),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Image.network(
+                product.imageUrl,
+                width: 150,
+                fit: BoxFit.contain,
+                loadingBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  ImageChunkEvent? loadingProgress,
+                ) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: const Color.fromARGB(255, 15, 38, 87),
+                      value:
+                          loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                    ),
+                  );
+                },
+                errorBuilder:
+                    (context, error, stackTrace) =>
+                        const Icon(Icons.broken_image),
+              ),
             ),
           ),
           if (product.stock <= 0)
@@ -143,6 +146,7 @@ class ProductWidget extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text(
                         product.name,
+                        textDirection: TextDirection.ltr,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontWeight: FontWeight.w500),

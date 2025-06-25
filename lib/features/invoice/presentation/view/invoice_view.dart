@@ -52,59 +52,59 @@ class _InvoiceViewState extends State<InvoiceView> {
                       controller.internetConnectivity();
                     },
                   ),
-                SizedBox(height: 8),
-                Center(
-                  child: Wrap(
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: [
-                      FractionallySizedBox(
-                        widthFactor:
-                            ResponsiveBreakpoints.of(context).isMobile
-                                ? 0.45
-                                : 0.20,
-                        child: buildStatCard(
-                          'فواتير اليوم',
-                          '40',
-                          Colors.green,
-                        ),
-                      ),
-                      FractionallySizedBox(
-                        widthFactor:
-                            ResponsiveBreakpoints.of(context).isMobile
-                                ? 0.45
-                                : 0.20,
-                        child: buildStatCard(
-                          'فواتير الاسبوع',
-                          '160',
-                          Colors.orangeAccent,
-                        ),
-                      ),
-                      FractionallySizedBox(
-                        widthFactor:
-                            ResponsiveBreakpoints.of(context).isMobile
-                                ? 0.45
-                                : 0.20,
-                        child: buildStatCard(
-                          'فواتير الشهر',
-                          '1200',
-                          Colors.amber,
-                        ),
-                      ),
-                      FractionallySizedBox(
-                        widthFactor:
-                            ResponsiveBreakpoints.of(context).isMobile
-                                ? 0.45
-                                : 0.20,
-                        child: buildStatCard(
-                          'كل الفواتير',
-                          '5000',
-                          Colors.brown,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // SizedBox(height: 8),
+                // Center(
+                //   child: Wrap(
+                //     spacing: 12,
+                //     runSpacing: 12,
+                //     children: [
+                //       FractionallySizedBox(
+                //         widthFactor:
+                //             ResponsiveBreakpoints.of(context).isMobile
+                //                 ? 0.45
+                //                 : 0.20,
+                //         child: buildStatCard(
+                //           'فواتير اليوم',
+                //           '40',
+                //           Colors.green,
+                //         ),
+                //       ),
+                //       FractionallySizedBox(
+                //         widthFactor:
+                //             ResponsiveBreakpoints.of(context).isMobile
+                //                 ? 0.45
+                //                 : 0.20,
+                //         child: buildStatCard(
+                //           'فواتير الاسبوع',
+                //           '160',
+                //           Colors.orangeAccent,
+                //         ),
+                //       ),
+                //       FractionallySizedBox(
+                //         widthFactor:
+                //             ResponsiveBreakpoints.of(context).isMobile
+                //                 ? 0.45
+                //                 : 0.20,
+                //         child: buildStatCard(
+                //           'فواتير الشهر',
+                //           '1200',
+                //           Colors.amber,
+                //         ),
+                //       ),
+                //       FractionallySizedBox(
+                //         widthFactor:
+                //             ResponsiveBreakpoints.of(context).isMobile
+                //                 ? 0.45
+                //                 : 0.20,
+                //         child: buildStatCard(
+                //           'كل الفواتير',
+                //           '5000',
+                //           Colors.brown,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(height: 24),
                 buildSearchAndFilter(),
                 const SizedBox(height: 12),

@@ -12,7 +12,7 @@ class Search extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: TextField(
-        autofocus: false,
+        focusNode: controller.searchFocusNode,
         onChanged: controller.onSearch,
         decoration: InputDecoration(
           border: InputBorder.none,

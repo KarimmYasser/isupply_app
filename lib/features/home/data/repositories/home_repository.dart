@@ -4,7 +4,7 @@ import '../models/category.dart';
 import '../models/product.dart';
 
 class HomeRepository {
-  Future<List<Product>> getProducts() async {
+  static Future<List<Product>> getProducts() async {
     final List<Product> products = await HomeRemoteDataSource.getProducts();
     if (products.isNotEmpty) {
       HomeLocalDataSource.insertProducts(products);
@@ -15,7 +15,7 @@ class HomeRepository {
     }
   }
 
-  Future<List<Product>> getProductsByGroupId(int groupId) async {
+  static Future<List<Product>> getProductsByGroupId(int groupId) async {
     final List<Product> products =
         await HomeRemoteDataSource.getProductsByGroupId(groupId);
     if (products.isNotEmpty) {
@@ -28,7 +28,7 @@ class HomeRepository {
     }
   }
 
-  Future<List<Category>> getProductsCategories() async {
+  static Future<List<Category>> getProductsCategories() async {
     return [];
   }
 }

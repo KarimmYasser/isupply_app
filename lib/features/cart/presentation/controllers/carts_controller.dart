@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:isupply_app/features/home/presentation/controllers/home_controller.dart';
 import '../../../customer/data/models/customer.dart';
 import '../../../home/data/models/product.dart';
 import '../../../invoice/helper/cart_invoice_mapper.dart';
@@ -16,6 +17,7 @@ class CartsController extends GetxController {
 
   var selectedCart = 0.obs;
   var isPayLoading = false.obs;
+  final cartFocusNode = FocusNode();
 
   double get invoiceTotal {
     final Cart selectedCard = listCarts[selectedCart.value];
@@ -285,6 +287,7 @@ class CartsController extends GetxController {
       }
     }
     final hasCtrl = HardwareKeyboard.instance.isControlPressed;
+    final controller = Get.find<HomeController>();
     if (hasCtrl) {
       switch (key) {
         case LogicalKeyboardKey.keyW:
@@ -299,6 +302,15 @@ class CartsController extends GetxController {
           } else {
             nextCart();
           }
+          return KeyEventResult.handled;
+        case LogicalKeyboardKey.arrowLeft:
+          controller.nextPage();
+          return KeyEventResult.handled;
+        case LogicalKeyboardKey.arrowRight:
+          controller.previousPage();
+          return KeyEventResult.handled;
+        case LogicalKeyboardKey.keyF:
+          controller.showSearch();
           return KeyEventResult.handled;
       }
     }

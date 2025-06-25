@@ -15,7 +15,7 @@ import '../widgets/product_widget.dart';
 class HomeView extends GetView<HomeController> {
   HomeView({super.key});
 
-  final cartsController = Get.put(CartsController());
+  final cartsController = Get.find<CartsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -206,6 +206,37 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                     ),
                           ),
+                        if (controller.listHomeProduct.isNotEmpty)
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed:
+                                      controller.currentPage.value > 1
+                                          ? controller.previousPage
+                                          : null,
+                                  icon: const Icon(Icons.arrow_back),
+                                ),
+                                Text(
+                                  '${controller.currentPage.value} / ${controller.totalPages.value}',
+                                ),
+                                IconButton(
+                                  onPressed:
+                                      controller.currentPage.value <
+                                              controller.totalPages.value
+                                          ? controller.nextPage
+                                          : null,
+                                  icon: const Icon(Icons.arrow_forward),
+                                ),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -217,7 +248,10 @@ class HomeView extends GetView<HomeController> {
                             ? ResponsiveBreakpoints.of(context).screenWidth *
                                 0.3
                             : 300,
-                    color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
                     child: const CartView(),
                   ),
               ],

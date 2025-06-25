@@ -44,10 +44,10 @@ class Product {
   double? taxedSalePrice;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    sku: json['sku'],
+    sku: json['id'].toString(),
     name: json["name"],
-    imageUrl: json["imageUrl"],
-    stock: json["stock"] == null ? 0 : json["stock"].toInt(),
+    imageUrl: json["image_url"],
+    stock: json["stock"] as int,
     groupId: json["groupId"] ?? 0,
     category:
         json["product_category"] == null
