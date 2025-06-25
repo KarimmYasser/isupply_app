@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'customer.g.dart';
 
-@HiveType(typeId: 5)
+@HiveType(typeId: 6)
 class Customer extends Equatable {
   const Customer({this.name, required this.mobileNo, this.email, this.Id});
 

@@ -4,7 +4,7 @@ import 'category.dart';
 
 part 'product.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 class Product {
   Product({
     required this.sku,

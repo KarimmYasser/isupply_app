@@ -5,7 +5,7 @@ import 'cart_item.dart';
 
 part 'cart.g.dart';
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 4)
 class Cart {
   Cart({
     this.id,

@@ -4,7 +4,7 @@ import '../../../home/data/models/product.dart';
 
 part 'cart_item.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 5)
 class CartItem {
   CartItem({
     this.id,

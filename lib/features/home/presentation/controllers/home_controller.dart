@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../../data/data_source/home_faker_data_source.dart';
 import '../../data/data_source/home_local_data_source.dart';
@@ -12,16 +15,24 @@ class HomeController extends GetxController {
   var listCategory = <Category>[].obs;
   var searching = false.obs;
   var barcoding = false.obs;
+  var internet = false.obs;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   RxBool loadingHome = false.obs;
   RxBool showHideCarts = false.obs;
+  late Timer _timer;
 
   @override
   void onReady() {
     super.onReady();
     getProductsCategories();
     getProduct();
+    internetConnectivity();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Category? selectedCategory;
@@ -118,5 +129,16 @@ class HomeController extends GetxController {
 
   void openDrawer() {
     scaffoldKey.currentState!.openDrawer();
+  }
+
+  Future internetConnectivity() async {
+    _timer = Timer.periodic(Duration(seconds: 20), (timer) async {
+      internet.value = await InternetConnection().hasInternetAccess;
+      update();
+    });
+  }
+
+  void stopCheckingInternet() {
+    _timer.cancel();
   }
 }

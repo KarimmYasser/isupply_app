@@ -1,5 +1,8 @@
+import 'package:hive/hive.dart';
+
 import '../../../home/data/models/product.dart';
 
+@HiveType(typeId: 1)
 class InvoiceItem {
   InvoiceItem({
     required this.product,
@@ -13,8 +16,11 @@ class InvoiceItem {
     return InvoiceItem(product: product, quantity: quantity);
   }
 
+  @HiveField(0)
   Product product;
+  @HiveField(1)
   int quantity;
+  @HiveField(2)
   double? sellingPrice;
 
   Map<String, dynamic> toJson() {

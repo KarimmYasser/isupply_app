@@ -12,7 +12,7 @@ class LocalStoreInvoice extends StoreInvoice implements InvoiceLoader {
 
   @override
   Future<Invoice> store(Invoice invoice) async {
-    await hiveBox.put(invoice.clientId, json.encode(invoice.toJson()));
+    // await hiveBox.put(invoice.clientId, json.encode(invoice.toJson()));
     return invoice;
   }
 
@@ -26,7 +26,7 @@ class LocalStoreInvoice extends StoreInvoice implements InvoiceLoader {
 
   @override
   Future<Invoice> delete(Invoice invoice) async {
-    await hiveBox.delete(invoice.clientId);
+    // await hiveBox.delete(invoice.clientId);
     return invoice;
   }
 }

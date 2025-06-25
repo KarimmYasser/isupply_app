@@ -1,7 +1,6 @@
-// ignore: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:isupply_app/core/widgets/no_internet_widget.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../cart/presentation/controllers/carts_controller.dart';
@@ -14,7 +13,7 @@ import '../widgets/header_home.dart';
 import '../widgets/product_widget.dart';
 
 class HomeView extends GetView<HomeController> {
-  HomeView({Key? key}) : super(key: key);
+  HomeView({super.key});
 
   final cartsController = Get.put(CartsController());
 
@@ -76,7 +75,8 @@ class HomeView extends GetView<HomeController> {
               leading: Icon(Icons.bar_chart),
               title: Text('Invoices'.tr),
               onTap: () {
-                Navigator.pop(context);
+                Get.back();
+                Get.toNamed("/invoice");
               },
             ),
             ListTile(
@@ -101,6 +101,13 @@ class HomeView extends GetView<HomeController> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         HeaderHomeWidget(controller: cont),
+                        if (!controller.internet.value)
+                          NoInternetWidget(
+                            onRetry: () {
+                              print(controller.internet.value);
+                              controller.internetConnectivity();
+                            },
+                          ),
                         if (cont.showHideCarts.value &&
                             ResponsiveBreakpoints.of(context).isMobile)
                           const Expanded(child: CartView()),
@@ -128,7 +135,7 @@ class HomeView extends GetView<HomeController> {
                                                   category.id,
                                         ),
                                       );
-                                    }).toList(),
+                                    }),
                                     const SizedBox(width: 10),
                                   ],
                                 ),
@@ -139,34 +146,65 @@ class HomeView extends GetView<HomeController> {
                         if (!(cont.showHideCarts.value &&
                             ResponsiveBreakpoints.of(context).isMobile))
                           Expanded(
-                            child: SingleChildScrollView(
-                              child: Wrap(
-                                alignment: WrapAlignment.center,
-                                children:
-                                    cont.newListHomeProduct.map((
-                                          Product product,
-                                        ) {
-                                          return InkWell(
-                                            onTap: () {
-                                              cartsController.addProduct(
-                                                product,
-                                              );
-                                            },
-                                            child: SizedBox(
-                                              width:
-                                                  width < 450
-                                                      ? width * 0.9
-                                                      : 224,
-                                              height: 250,
-                                              child: ProductWidget(
-                                                product: product,
-                                              ),
+                            child:
+                                cont.newListHomeProduct.isNotEmpty
+                                    ? SingleChildScrollView(
+                                      child: Wrap(
+                                        alignment: WrapAlignment.center,
+                                        children:
+                                            cont.newListHomeProduct.map((
+                                                  Product product,
+                                                ) {
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      cartsController
+                                                          .addProduct(product);
+                                                    },
+                                                    child: SizedBox(
+                                                      width:
+                                                          width < 450
+                                                              ? width * 0.9
+                                                              : 224,
+                                                      height: 250,
+                                                      child: ProductWidget(
+                                                        product: product,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList()
+                                                as List<Widget>,
+                                      ),
+                                    )
+                                    : Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.shopping_cart_outlined,
+                                            size: 80,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(height: 16),
+                                          Text(
+                                            'لا توجد منتجات متاحة',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey,
                                             ),
-                                          );
-                                        }).toList()
-                                        as List<Widget>,
-                              ),
-                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            'يرجى التحقق لاحقًا.',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                           ),
                       ],
                     ),
