@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 
 class KeyPad extends StatelessWidget {
   const KeyPad({
-    Key? key,
+    super.key,
     required this.onChange,
     required this.textEditingController,
-  }) : super(key: key);
+  });
 
   static const double buttonSize = 72.0;
   final TextEditingController textEditingController;

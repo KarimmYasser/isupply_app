@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:isupply_app/core/connection_controller.dart';
 import 'package:isupply_app/core/widgets/no_internet_widget.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -101,111 +102,110 @@ class HomeView extends GetView<HomeController> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         HeaderHomeWidget(controller: cont),
-                        if (!controller.internet.value)
-                          NoInternetWidget(
-                            onRetry: () {
-                              print(controller.internet.value);
-                              controller.internetConnectivity();
-                            },
-                          ),
-                        if (cont.showHideCarts.value &&
-                            ResponsiveBreakpoints.of(context).isMobile)
-                          const Expanded(child: CartView()),
-                        if (!(cont.showHideCarts.value &&
-                            ResponsiveBreakpoints.of(context).isMobile))
-                          Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const SizedBox(width: 10),
-                                    ...cont.listCategory.map((category) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          cont.changeCategory(category);
-                                        },
-                                        child: CategoryWidget(
-                                          title: category.name,
-                                          isSelected:
-                                              cont.selectedCategory != null &&
-                                              cont.selectedCategory!.id ==
-                                                  category.id,
-                                        ),
-                                      );
-                                    }),
-                                    const SizedBox(width: 10),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        if (!(cont.showHideCarts.value &&
-                            ResponsiveBreakpoints.of(context).isMobile))
-                          Expanded(
-                            child:
-                                cont.newListHomeProduct.isNotEmpty
-                                    ? SingleChildScrollView(
-                                      child: Wrap(
-                                        alignment: WrapAlignment.center,
-                                        children:
-                                            cont.newListHomeProduct.map((
-                                                  Product product,
-                                                ) {
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      cartsController
-                                                          .addProduct(product);
-                                                    },
-                                                    child: SizedBox(
-                                                      width:
-                                                          width < 450
-                                                              ? width * 0.9
-                                                              : 224,
-                                                      height: 250,
-                                                      child: ProductWidget(
-                                                        product: product,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }).toList()
-                                                as List<Widget>,
+                        Obx(() {
+                          if (!ConnectionController.to.isConnected.value) {
+                            return NoInternetWidget(
+                              onRetry: () {
+                                ConnectionController.to.forceCheckConnection();
+                              },
+                            );
+                          }
+                          return SizedBox.shrink();
+                        }),
+                        Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const SizedBox(width: 10),
+                                  ...cont.listCategory.map((category) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        cont.changeCategory(category);
+                                      },
+                                      child: CategoryWidget(
+                                        title: category.name,
+                                        isSelected:
+                                            cont.selectedCategory != null &&
+                                            cont.selectedCategory!.id ==
+                                                category.id,
                                       ),
-                                    )
-                                    : Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.shopping_cart_outlined,
-                                            size: 80,
+                                    );
+                                  }),
+                                  const SizedBox(width: 10),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                        Expanded(
+                          child:
+                              cont.newListHomeProduct.isNotEmpty
+                                  ? SingleChildScrollView(
+                                    child: Wrap(
+                                      alignment: WrapAlignment.center,
+                                      children:
+                                          cont.newListHomeProduct.map((
+                                                Product product,
+                                              ) {
+                                                return InkWell(
+                                                  onTap: () {
+                                                    cartsController.addProduct(
+                                                      product,
+                                                    );
+                                                  },
+                                                  child: SizedBox(
+                                                    width:
+                                                        width < 450
+                                                            ? width * 0.9
+                                                            : 224,
+                                                    height: 250,
+                                                    child: ProductWidget(
+                                                      product: product,
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList()
+                                              as List<Widget>,
+                                    ),
+                                  )
+                                  : cont.loadingHome.value
+                                  ? Center(child: CircularProgressIndicator())
+                                  : Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.shopping_cart_outlined,
+                                          size: 80,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(height: 16),
+                                        Text(
+                                          'لا توجد منتجات متاحة',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.grey,
                                           ),
-                                          SizedBox(height: 16),
-                                          Text(
-                                            'لا توجد منتجات متاحة',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.grey,
-                                            ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          'يرجى التحقق لاحقًا.',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
                                           ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            'يرجى التحقق لاحقًا.',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                          ),
+                                  ),
+                        ),
                         if (controller.listHomeProduct.isNotEmpty)
                           Container(
                             decoration: BoxDecoration(

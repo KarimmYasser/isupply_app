@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 
 class AddCustomerWidget extends StatelessWidget {
   const AddCustomerWidget({
-    Key? key,
+    super.key,
     required this.onAddCustomer,
     required this.validateInput,
     required this.errorValidateMessage,
     required this.isCustomerLoading,
-  }) : super(key: key);
+  });
   final Function(String name, String ID, String mobile_no, String email)
   onAddCustomer;
   final Function(String text, String type) validateInput;
@@ -38,7 +38,7 @@ class AddCustomerWidget extends StatelessWidget {
             decoration: InputDecoration(
               labelText: 'رقم المعرف',
               labelStyle: const TextStyle(
-                color: const Color(0xff178F49),
+                color: Color(0xff178F49),
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
@@ -53,7 +53,7 @@ class AddCustomerWidget extends StatelessWidget {
             decoration: InputDecoration(
               labelText: 'اسم العميل',
               labelStyle: const TextStyle(
-                color: const Color(0xff178F49),
+                color: Color(0xff178F49),
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
@@ -68,7 +68,7 @@ class AddCustomerWidget extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: '*رقم الجوال',
                 labelStyle: const TextStyle(
-                  color: const Color(0xff178F49),
+                  color: Color(0xff178F49),
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
@@ -105,7 +105,7 @@ class AddCustomerWidget extends StatelessWidget {
             decoration: InputDecoration(
               labelText: 'الايميل',
               labelStyle: const TextStyle(
-                color: const Color(0xff178F49),
+                color: Color(0xff178F49),
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),

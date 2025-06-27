@@ -2,6 +2,9 @@ import 'package:faker_dart/faker_dart.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:isupply_app/core/connection_controller.dart';
+import 'package:isupply_app/features/invoice/data/repositories/invoice_repository.dart';
+import 'package:isupply_app/features/invoice/presentation/controllers/invoice_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../features/cart/presentation/controllers/carts_controller.dart';
@@ -25,12 +28,15 @@ Future<void> init() async {
   supabaseUrl = dotenv.env['SUPABASE_URL']!;
   supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY']!;
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  Get.put(ConnectionController());
   Get.put(CartsController());
   Get.put(HomeController());
+  Get.put(InvoiceController());
   Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(InvoiceItemAdapter());
   Hive.registerAdapter(InvoiceAdapter());
   productsBox = await Hive.openBox<Product>('products');
   invoicesBox = await Hive.openBox<Invoice>('invoice');
+  await InvoiceRepository.storeUnsynced();
 }

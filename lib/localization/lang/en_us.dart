@@ -9,4 +9,7 @@ const Map<String, String> enUS = {
   'Sales': 'Sales',
   'Out of Stock': 'Out of Stock',
   'Pound': 'EGP',
+  'Done': 'Done',
+  'Pending': 'Pending',
+  'Failed': 'Cancelled',
 };

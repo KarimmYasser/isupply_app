@@ -1,3 +1,5 @@
+import 'package:isupply_app/core/connection_controller.dart';
+
 import '../data_source/home_local_data_source.dart';
 import '../data_source/home_remote_data_source.dart';
 import '../models/category.dart';
@@ -5,10 +7,15 @@ import '../models/product.dart';
 
 class HomeRepository {
   static Future<List<Product>> getProducts() async {
-    final List<Product> products = await HomeRemoteDataSource.getProducts();
-    if (products.isNotEmpty) {
-      HomeLocalDataSource.insertProducts(products);
-      return products;
+    if (ConnectionController.to.isConnected.value) {
+      try {
+        final List<Product> products = await HomeRemoteDataSource.getProducts();
+        HomeLocalDataSource.insertProducts(products);
+        return products;
+      } catch (e) {
+        final List<Product> products = await HomeLocalDataSource.getProducts();
+        return products;
+      }
     } else {
       final List<Product> products = await HomeLocalDataSource.getProducts();
       return products;

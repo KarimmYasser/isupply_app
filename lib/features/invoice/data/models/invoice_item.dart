@@ -8,13 +8,18 @@ class InvoiceItem {
   InvoiceItem({
     required this.product,
     required this.quantity,
-    this.sellingPrice,
+    required this.sellingPrice,
   });
 
   factory InvoiceItem.fromJson(Map<String, dynamic> json) {
     final Product product = Product.fromJson(json['product']);
     final int quantity = json['quantity'];
-    return InvoiceItem(product: product, quantity: quantity);
+    final double sellingPrice = json['selling_price'];
+    return InvoiceItem(
+      product: product,
+      quantity: quantity,
+      sellingPrice: sellingPrice,
+    );
   }
 
   @HiveField(0)
@@ -22,15 +27,13 @@ class InvoiceItem {
   @HiveField(1)
   int quantity;
   @HiveField(2)
-  double? sellingPrice;
+  double sellingPrice;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['product'] = product.toJson();
     data['quantity'] = quantity;
-    if (sellingPrice != null) {
-      data['sellingPrice'] = sellingPrice;
-    }
+    data['sellingPrice'] = sellingPrice;
     return data;
   }
 }

@@ -6,7 +6,7 @@ import '../controllers/home_controller.dart';
 import 'search_widget.dart';
 
 class HeaderHomeWidget extends StatelessWidget {
-  HeaderHomeWidget({Key? key, required this.controller}) : super(key: key);
+  const HeaderHomeWidget({super.key, required this.controller});
 
   final HomeController controller;
 
@@ -69,7 +69,7 @@ class SearchBar extends StatelessWidget {
   final bool isAutoFous;
   final HomeController controller;
 
-  SearchBar({
+  const SearchBar({super.key, 
     required this.isSearching,
     required this.controller,
     required this.isBarcode,

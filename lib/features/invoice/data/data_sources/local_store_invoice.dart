@@ -1,32 +1,29 @@
-import 'dart:convert';
-
-import 'package:hive/hive.dart';
+import 'package:isupply_app/core/config.dart';
 import '../models/invoice.dart';
-import 'invoice_loader.dart';
-import 'store_invoice.dart';
 
-class LocalStoreInvoice extends StoreInvoice implements InvoiceLoader {
-  LocalStoreInvoice({required this.hiveBox});
-
-  final Box<String> hiveBox;
-
-  @override
-  Future<Invoice> store(Invoice invoice) async {
-    // await hiveBox.put(invoice.clientId, json.encode(invoice.toJson()));
+class LocalStoreInvoice {
+  static Future<Invoice> store(Invoice invoice) async {
+    await invoicesBox.add(invoice);
     return invoice;
   }
 
-  @override
-  Future<List<Invoice>> load() {
-    final List<Invoice> invoices = hiveBox.values
-        .map((String invoice) => Invoice.fromJson(json.decode(invoice)))
-        .toList();
-    return Future<List<Invoice>>.value(invoices);
+  static List<Invoice> load() {
+    final List<Invoice> invoices = invoicesBox.values.toList();
+    return invoices;
   }
 
-  @override
-  Future<Invoice> delete(Invoice invoice) async {
-    // await hiveBox.delete(invoice.clientId);
-    return invoice;
+  static Future<void> delete(String invoiceID) async {
+    final keyToDelete = invoicesBox.keys.firstWhere(
+      (key) => invoicesBox.get(key)?.id == invoiceID,
+      orElse: () => null,
+    );
+
+    if (keyToDelete != null) {
+      await invoicesBox.delete(keyToDelete);
+    }
+  }
+
+  static Future<int> clear() async {
+    return await invoicesBox.clear();
   }
 }

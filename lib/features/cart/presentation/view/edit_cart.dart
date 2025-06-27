@@ -186,7 +186,6 @@ class _EditCartWidgetState extends State<EditCartWidget> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
-                      print("11111");
                       setState(() {
                         isPriceSelected = false;
                       });
@@ -309,8 +308,7 @@ class _EditCartWidgetState extends State<EditCartWidget> {
                   child: InkWell(
                     onTap: () {
                       if (isPriceSelected == true) {
-                        // todo price
-                        widget.item.product.price = double.parse(
+                        widget.item.sellingPrice = double.parse(
                           pinController.text,
                         );
                       } else {
@@ -320,8 +318,6 @@ class _EditCartWidgetState extends State<EditCartWidget> {
                       Get.back();
                     },
                     child: Container(
-                      // width: 60,
-                      // height: 60,
                       alignment: Alignment.center,
                       margin: const EdgeInsets.symmetric(
                         horizontal: 5,

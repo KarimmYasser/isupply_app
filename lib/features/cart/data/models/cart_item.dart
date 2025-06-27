@@ -35,8 +35,5 @@ class CartItem {
     "product": product.toJson(),
   };
 
-  double? get getPrice => product.salePrice ?? product.price;
-
-  // todo calculate taxed selling price
-  double get taxedSellingPrice => getPrice!;
+  double? get getPrice => sellingPrice ?? product.salePrice ?? product.price;
 }

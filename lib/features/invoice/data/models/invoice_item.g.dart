@@ -19,7 +19,7 @@ class InvoiceItemAdapter extends TypeAdapter<InvoiceItem> {
     return InvoiceItem(
       product: fields[0] as Product,
       quantity: fields[1] as int,
-      sellingPrice: fields[2] as double?,
+      sellingPrice: fields[2] as double,
     );
   }
 

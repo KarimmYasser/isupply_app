@@ -9,4 +9,7 @@ const Map<String, String> arEG = {
   'Sales': 'المبيعات',
   'Out of Stock': 'نفذ من المخزون',
   'Pound': 'جنيه',
+  'Done': 'تمت',
+  'Pending': 'معلقة',
+  'Failed': 'ملغاة',
 };

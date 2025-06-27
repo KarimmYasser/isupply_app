@@ -1,10 +1,12 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:isupply_app/features/home/presentation/controllers/home_controller.dart';
+import 'package:isupply_app/features/invoice/data/helper/cart_invoice_mapper.dart';
 import '../../../customer/data/models/customer.dart';
 import '../../../home/data/models/product.dart';
-import '../../../invoice/helper/cart_invoice_mapper.dart';
+import '../../../invoice/data/repositories/invoice_repository.dart';
 import '../../data/models/cart.dart';
 import '../../data/models/cart_item.dart';
 
@@ -65,7 +67,7 @@ class CartsController extends GetxController {
   void addProduct(Product product) {
     bool thereIsProductInCart = false;
     for (var elementProduct in listCarts[selectedCart.value].cartItems) {
-      if (elementProduct.product.sku == product.sku) {
+      if (elementProduct.product.id == product.id) {
         if (elementProduct.product.stock <= elementProduct.quantity) {
           Get.closeAllSnackbars();
           Get.snackbar(
@@ -122,19 +124,28 @@ class CartsController extends GetxController {
         );
         return;
       }
+      double price = product.price;
+      if (product.salePrice != null && product.salePrice != 0.0) {
+        price = product.salePrice!;
+      }
       listCarts[selectedCart.value].cartItems.add(
-        CartItem(product: product, quantity: 1),
+        CartItem(product: product, quantity: 1, sellingPrice: price),
       );
     }
     listCarts.refresh();
+    if (kDebugMode) {
+      print(
+        "Added product: ${product.name} with ${product.id} to cart ${selectedCart.value + 1}",
+      );
+    }
     update();
   }
 
   void updateItem(CartItem product) {
     for (var elementProduct in listCarts[selectedCart.value].cartItems) {
-      if (elementProduct.product.sku == product.product.sku) {
+      if (elementProduct.product.id == product.product.id) {
         elementProduct.quantity = product.quantity;
-        elementProduct.sellingPrice = product.sellingPrice;
+        elementProduct.sellingPrice = product.getPrice;
       }
     }
     update();
@@ -142,7 +153,7 @@ class CartsController extends GetxController {
 
   void deleteItem(CartItem product) {
     listCarts[selectedCart.value].cartItems.removeWhere(
-      (elementProduct) => elementProduct.product.sku == product.product.sku,
+      (elementProduct) => elementProduct.product.id == product.product.id,
     );
 
     update();
@@ -320,13 +331,35 @@ class CartsController extends GetxController {
 
   Future<void> pay() async {
     final cart = listCarts[selectedCart.value];
+    if (cart.cartItems.isEmpty) {
+      Get.snackbar(
+        "تنبيه",
+        "لا يوجد عناصر في السلة",
+        backgroundColor: Colors.orange,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.all(14),
+      );
+      return;
+    }
 
-    final invoice = CartInvoiceMapper.createInvoiceFrom(cart: cart);
+    final invoice = CartToInvoiceConverter.createInvoiceFromCart(cart);
     isPayLoading.value = true;
     if (invoice != null) {
-      // final StoreInvoice invoiceRepository = Get.put(InvoiceRepository);
       try {
-        // await invoiceRepository.store(invoice);
+        await InvoiceRepository.store(invoice);
+
+        // Update stock for each item in the cart
+        final homeController = Get.find<HomeController>();
+        for (final cartItem in cart.cartItems) {
+          final productId = cartItem.product.id;
+          final quantity = cartItem.quantity;
+          final currentStock = cartItem.product.stock;
+          final newStock = currentStock - quantity;
+
+          // Call the updateProductStockLocally function
+          await homeController.updateProductStockLocally(productId, newStock);
+        }
+
         Get.snackbar(
           "تم",
           "تم إصدار الفاتورة",

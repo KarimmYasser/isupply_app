@@ -31,10 +31,10 @@ class Invoice {
 
   factory Invoice.fromJson(Map<String, dynamic> json) {
     final List<InvoiceItem> invoiceItems = <InvoiceItem>[];
-    final List<dynamic> items = json['items'];
-    for (final Map<String, dynamic> value in items) {
-      invoiceItems.add(InvoiceItem.fromJson(value));
-    }
+    // final List<dynamic> items = json['items'];
+    // for (final Map<String, dynamic> value in items) {
+    //   invoiceItems.add(InvoiceItem.fromJson(value));
+    // }
     return Invoice(
       id: json['id'],
       mobileNo: json['mobile_no'],

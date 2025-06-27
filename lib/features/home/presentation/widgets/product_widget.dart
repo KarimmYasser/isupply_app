@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get.dart';
+import 'package:isupply_app/core/connection_controller.dart';
 
 import '../../data/models/product.dart';
 
@@ -21,32 +22,38 @@ class ProductWidget extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(4.0),
-              child: Image.network(
-                product.imageUrl,
-                width: 150,
-                fit: BoxFit.contain,
-                loadingBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  ImageChunkEvent? loadingProgress,
-                ) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: const Color.fromARGB(255, 15, 38, 87),
-                      value:
-                          loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                    ),
-                  );
-                },
-                errorBuilder:
-                    (context, error, stackTrace) =>
-                        const Icon(Icons.broken_image),
+              child: Obx(
+                () =>
+                    ConnectionController.to.isConnected.value
+                        ? Image.network(
+                          product.imageUrl,
+                          width: 150,
+                          fit: BoxFit.contain,
+                          loadingBuilder: (
+                            BuildContext context,
+                            Widget child,
+                            ImageChunkEvent? loadingProgress,
+                          ) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: const Color.fromARGB(255, 15, 38, 87),
+                                value:
+                                    loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                              ),
+                            );
+                          },
+                          errorBuilder:
+                              (context, error, stackTrace) =>
+                                  const Icon(Icons.broken_image),
+                        )
+                        : const Icon(Icons.broken_image),
               ),
             ),
           ),

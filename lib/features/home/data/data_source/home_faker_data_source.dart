@@ -11,7 +11,7 @@ class HomeFakerDataSource {
         Product(
           name: faker.commerce.productName(),
           price: faker.datatype.number(max: 200).toDouble(),
-          sku: faker.commerce.productName(),
+          id: faker.commerce.productName(),
           imageUrl: faker.image.loremPicsum.image(),
           groupId: faker.datatype.number(max: 2),
           stock:
@@ -40,7 +40,7 @@ class HomeFakerDataSource {
         Product(
           name: faker.commerce.productName(),
           price: faker.datatype.number(max: 200).toDouble(),
-          sku: faker.commerce.productName(),
+          id: faker.commerce.productName(),
           imageUrl: faker.image.loremPicsum.image(),
           groupId: groupId,
           category: Category(id: groupId, name: faker.commerce.department()),

@@ -9,7 +9,7 @@ import '../widgets/cart_item_product_widget.dart';
 import '../widgets/cart_item_widget.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({Key? key}) : super(key: key);
+  const CartView({super.key});
 
   @override
   State<CartView> createState() => _CartViewState();
@@ -59,7 +59,7 @@ class _CartViewState extends State<CartView> {
                                 cartsController.selectedCart.value == index,
                           ),
                         );
-                      }).toList(),
+                      }),
                       InkWell(
                         onTap: () {
                           cartsController.addCart();
@@ -240,12 +240,16 @@ class _CartViewState extends State<CartView> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 15, 38, 87),
                     ),
-                    child:
-                        cartsController.isPayLoading.value
-                            ? const Center(child: CircularProgressIndicator())
-                            : SizedBox(
-                              height: 55,
-                              child: Row(
+                    child: SizedBox(
+                      height: 55,
+                      child:
+                          cartsController.isPayLoading.value
+                              ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                              : Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
@@ -261,7 +265,7 @@ class _CartViewState extends State<CartView> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        '${cartsController.invoiceTotal}',
+                                        '${(cartsController.invoiceTotal * 100).round() / 100}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
@@ -280,7 +284,7 @@ class _CartViewState extends State<CartView> {
                                   ),
                                 ],
                               ),
-                            ),
+                    ),
                   ),
                 ),
               ],

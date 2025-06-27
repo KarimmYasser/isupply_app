@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:isupply_app/features/cart/presentation/controllers/carts_controller.dart';
-import 'package:isupply_app/features/home/data/repositories/home_repository.dart';
 
+import '../../../../core/config.dart';
+import '../../../cart/presentation/controllers/carts_controller.dart';
 import '../../data/data_source/home_faker_data_source.dart';
 import '../../data/data_source/home_local_data_source.dart';
 import '../../data/models/category.dart';
 import '../../data/models/product.dart';
+import '../../data/repositories/home_repository.dart';
 
 class HomeController extends GetxController {
   var listHomeProduct = <Product>[].obs;
@@ -17,13 +17,11 @@ class HomeController extends GetxController {
   var listCategory = <Category>[].obs;
   var searching = false.obs;
   var barcoding = false.obs;
-  var internet = true.obs;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final FocusNode searchFocusNode = FocusNode();
   RxBool isSearchFocused = false.obs;
   RxBool loadingHome = false.obs;
   RxBool showHideCarts = false.obs;
-  late Timer _timer;
   Timer? _debounceTimer;
   static const itemsPerPage = 30;
   RxInt currentPage = 1.obs;
@@ -82,17 +80,10 @@ class HomeController extends GetxController {
 
   Future getProduct() async {
     loadingHome.value = true;
-    try {
-      listHomeProduct.value = await HomeRepository.getProducts();
-      calculateTotalPages();
-      updateProductList();
-      update();
-    } catch (e) {
-      listHomeProduct.value = await HomeFakerDataSource.getProducts();
-      calculateTotalPages();
-      updateProductList();
-      update();
-    }
+    listHomeProduct.value = await HomeRepository.getProducts();
+    calculateTotalPages();
+    updateProductList();
+    update();
     loadingHome.value = false;
   }
 
@@ -125,6 +116,32 @@ class HomeController extends GetxController {
     ];
     loadingHome.value = false;
     update();
+  }
+
+  Future<void> updateProductStockLocally(String productId, int newStock) async {
+    try {
+      // Find the product in the local list
+      final productIndex = listHomeProduct.indexWhere(
+        (product) => product.id == productId,
+      );
+
+      if (productIndex != -1) {
+        // Update the stock
+        listHomeProduct[productIndex].stock = newStock;
+
+        // Update the product in the Hive box
+        await productsBox.put(productId, listHomeProduct[productIndex]);
+
+        // Refresh the displayed list
+        updateProductList();
+        update();
+      } else {
+        print("Product not found in local list");
+      }
+    } catch (e) {
+      print("Error updating product stock locally: $e");
+      Get.snackbar("Error", "Failed to update product stock locally");
+    }
   }
 
   Future changeCategory(Category cat) async {
@@ -161,17 +178,6 @@ class HomeController extends GetxController {
 
   void openDrawer() {
     scaffoldKey.currentState!.openDrawer();
-  }
-
-  Future internetConnectivity() async {
-    _timer = Timer.periodic(Duration(seconds: 20), (timer) async {
-      internet.value = await InternetConnection().hasInternetAccess;
-      update();
-    });
-  }
-
-  void stopCheckingInternet() {
-    _timer.cancel();
   }
 
   void goToPage(int page) {

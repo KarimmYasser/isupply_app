@@ -40,7 +40,7 @@ class CartItemProductWidget extends StatelessWidget {
         text: TextSpan(
           children: [
             TextSpan(
-              text: "${item.quantity * item.getPrice!}",
+              text: "${(item.quantity * item.getPrice! * 100).round() / 100} ",
               style: TextStyle(
                 color: Color.fromARGB(255, 15, 38, 87),
                 fontSize: 24,

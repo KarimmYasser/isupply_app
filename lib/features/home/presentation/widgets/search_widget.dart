@@ -5,7 +5,7 @@ import '../controllers/home_controller.dart';
 
 class Search extends StatelessWidget {
   final HomeController controller;
-  Search(this.controller);
+  const Search(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class AnimateExpansion extends StatefulWidget {
   final bool animate;
   final double axisAlignment;
 
-  AnimateExpansion({
+  const AnimateExpansion({super.key, 
     this.animate = false,
     required this.axisAlignment,
     required this.child,

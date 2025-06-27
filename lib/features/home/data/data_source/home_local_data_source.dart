@@ -1,14 +1,21 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 import '../../../../core/config.dart';
 import '../models/product.dart';
 
 class HomeLocalDataSource {
   static Future<List<Product>> getProducts() async {
+    if (kDebugMode) {
+      print('Loaded from Local Storage ${productsBox.length} items');
+    }
     return productsBox.values.toList();
   }
 
-  static Future<Iterable<int>> insertProducts(List<Product> products) async {
-    productsBox.clear();
-    return productsBox.addAll(products);
+  static Future<void> insertProducts(List<Product> products) async {
+    await productsBox.clear();
+    for (final product in products) {
+      await productsBox.put(product.id, product);
+    }
   }
 
   static Future<List<Product>> getProductsByGroupId(int groupId) async {
@@ -16,7 +23,7 @@ class HomeLocalDataSource {
         .where((Product product) => product.groupId == groupId)
         .toList();
   }
-  
+
   // static Future<List<Product>> getProducts() async {
   //   final raw = await rootBundle.loadString('assets/medicines.csv');
   //   final csv = CsvToListConverter().convert(raw, eol: '\n');
@@ -35,7 +42,7 @@ class HomeLocalDataSource {
   //     var price = faker.datatype.float(min: 5, max: 1000).roundToDouble();
 
   //     final product = Product(
-  //       sku: faker.internet.ip(),
+  //       id: faker.internet.ip(),
   //       name: name,
   //       price: price,
   //       imageUrl: imageUrl,

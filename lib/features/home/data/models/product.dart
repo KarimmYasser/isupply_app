@@ -7,7 +7,7 @@ part 'product.g.dart';
 @HiveType(typeId: 2)
 class Product {
   Product({
-    required this.sku,
+    required this.id,
     required this.name,
     required this.price,
     required this.imageUrl,
@@ -21,7 +21,7 @@ class Product {
   });
 
   @HiveField(0)
-  String sku;
+  String id;
   @HiveField(1)
   String name;
   @HiveField(2)
@@ -44,7 +44,7 @@ class Product {
   double? taxedSalePrice;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    sku: json['id'].toString(),
+    id: json['id'].toString(),
     name: json["name"],
     imageUrl: json["image_url"],
     stock: json["stock"] as int,
@@ -54,7 +54,12 @@ class Product {
             ? null
             : Category.fromJson(json["product_category"]),
     price: json["price"] == null ? 0 : json["price"].toDouble(),
-    salePrice: json["sale_price"] == null ? 0 : json["sale_price"].toDouble(),
+    salePrice:
+        json["sale_price"] == null
+            ? null
+            : json["sale_price"] as double == 0.0
+            ? null
+            : json["sale_price"] as double,
     taxRate: json["tax_rate"]?.toDouble(),
     taxedPrice: json["taxed_price"]?.toDouble(),
     taxedSalePrice:
@@ -64,7 +69,7 @@ class Product {
   );
 
   Map<String, dynamic> toJson() => {
-    "sku": sku,
+    "id": id,
     "name": name,
     "price": price,
     "imageUrl": imageUrl,

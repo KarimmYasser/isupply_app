@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class CategoryWidget extends StatelessWidget {
   const CategoryWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.isSelected,
-  }) : super(key: key);
+  });
 
   final String title;
   final bool isSelected;
