@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:isupply_app/core/config.dart';
+import 'package:isupply_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:isupply_app/features/invoice/data/repositories/invoice_repository.dart';
 
 class ConnectionController extends GetxController {
@@ -43,7 +45,10 @@ class ConnectionController extends GetxController {
       isConnected.value = hasInternet;
       _lastInternetStatus = hasInternet;
       if (hasInternet) {
-        await InvoiceRepository.storeUnsynced();
+        if (invoicesBox.isOpen) {
+          await InvoiceRepository.storeUnsynced();
+        }
+        HomeController.to.getProduct();
       }
     }
     update();

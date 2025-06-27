@@ -174,7 +174,11 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                   )
                                   : cont.loadingHome.value
-                                  ? Center(child: CircularProgressIndicator())
+                                  ? Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color.fromARGB(255, 15, 38, 87),
+                                    ),
+                                  )
                                   : Center(
                                     child: Column(
                                       mainAxisAlignment:

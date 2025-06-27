@@ -323,6 +323,11 @@ class CartsController extends GetxController {
         case LogicalKeyboardKey.keyF:
           controller.showSearch();
           return KeyEventResult.handled;
+        case LogicalKeyboardKey.enter:
+          if (HardwareKeyboard.instance.isShiftPressed) {
+            pay();
+          }
+          return KeyEventResult.handled;
       }
     }
 

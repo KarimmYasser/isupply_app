@@ -12,6 +12,7 @@ import '../../data/models/product.dart';
 import '../../data/repositories/home_repository.dart';
 
 class HomeController extends GetxController {
+  static HomeController get to => Get.find<HomeController>();
   var listHomeProduct = <Product>[].obs;
   var newListHomeProduct = <Product>[].obs;
   var listCategory = <Category>[].obs;
@@ -78,9 +79,17 @@ class HomeController extends GetxController {
     update();
   }
 
-  Future getProduct() async {
+  Future<void> getProduct() async {
     loadingHome.value = true;
-    listHomeProduct.value = await HomeRepository.getProducts();
+    List<Product> products = await HomeRepository.getProducts();
+
+    // Separate in-stock and out-of-stock products
+    List<Product> inStockProducts = products.where((p) => p.stock > 0).toList();
+    List<Product> outOfStockProducts =
+        products.where((p) => p.stock <= 0).toList();
+
+    // Combine the lists, with in-stock products first
+    listHomeProduct.value = [...inStockProducts, ...outOfStockProducts];
     calculateTotalPages();
     updateProductList();
     update();

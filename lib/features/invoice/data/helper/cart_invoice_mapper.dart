@@ -40,6 +40,6 @@ class CartToInvoiceConverter {
     for (var item in items) {
       total += item.sellingPrice * item.quantity;
     }
-    return total;
+    return (total * 100).round() / 100;
   }
 }

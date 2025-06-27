@@ -50,10 +50,17 @@ class ProductWidget extends StatelessWidget {
                             );
                           },
                           errorBuilder:
-                              (context, error, stackTrace) =>
-                                  const Icon(Icons.broken_image),
+                              (context, error, stackTrace) => const Icon(
+                                Icons.broken_image,
+                                color: Colors.grey,
+                                size: 75,
+                              ),
                         )
-                        : const Icon(Icons.broken_image),
+                        : const Icon(
+                          Icons.broken_image,
+                          color: Colors.grey,
+                          size: 75,
+                        ),
               ),
             ),
           ),
