@@ -22,7 +22,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final width = Get.width;
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton:
           ResponsiveBreakpoints.of(context).isMobile
               ? CartActionButton()
