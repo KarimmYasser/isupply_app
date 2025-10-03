@@ -1,5 +1,7 @@
 # 💊 iSupply – Pharmacy POS System
 
+![POS Cover](pos.png)
+
 **iSupply** is a fully responsive, multi-platform Pharmacy Point-of-Sale (POS) app built using **Flutter** and **Supabase**, supporting Windows, Android, iOS, macOS, and Linux. It provides pharmacy staff with a localized and intuitive interface to manage inventory, suppliers, and invoices — all in one place.
 
 ---
